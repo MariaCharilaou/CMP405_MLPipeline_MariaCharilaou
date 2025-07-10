@@ -1,76 +1,108 @@
-🧠 Machine Learning – Product Category Classification
+Titanic Survival Prediction Agent
 
-📌 Περιγραφή  
-Αυτό το notebook υλοποιεί ένα μοντέλο Μηχανικής Μάθησης που προβλέπει την κατηγορία ενός προϊόντος με βάση τον τίτλο του. Χρησιμοποιείται το dataset **“PriceRunner Product Classification and Categorization”** από το Kaggle, κατάλληλο για πρόβλημα ταξινόμησης πολλαπλών κατηγοριών (multi-class classification).
+Αυτό το project υλοποιεί έναν AI Agent που προβλέπει την πιθανότητα επιβίωσης επιβάτη του Τιτανικού, εξηγεί την πρόβλεψη και παρέχει συμβουλές και ανατροφοδότηση με βάση τα χαρακτηριστικά του επιβάτη.
 
-👤 Ονοματεπώνυμο & ΑΜ  
-Ονοματεπώνυμο: Μαρία Χαριλάου  
-Αριθμός Μητρώου (ΑΜ): 20238534
+---
 
-🔍 Περιγραφή Μοντέλου  
-Χρησιμοποιήθηκε ο αλγόριθμος **Random Forest Classifier** για την πρόβλεψη της κατηγορίας του προϊόντος βάσει του τίτλου του.
+Περιεχόμενα:
 
-Κατηγορίες προϊόντων:
-- Mobile Phones
-- CPUs
-- Dishwashers
-- TVs
-- Microwaves
-- Washing Machines
-- Fridge Freezers
-- Digital Cameras
-- Fridges
-- Freezers
+- `titanic_ml.py`: Εκπαίδευση μοντέλου με καθαρισμένα δεδομένα και manual encoding
+- `ai_agent.py`: Διαλογικός πράκτορας (agent) που κάνει προβλέψεις και εξηγήσεις
+- `model.pkl`: Εκπαιδευμένο μοντέλο RandomForest
+- `titanic.csv`: Dataset επιβατών του Τιτανικού
 
-📊 Βασικά Χαρακτηριστικά:
-- Τύπος προβλήματος: Multi-class Classification
-- Train/Test split: 80/20
-- Vectorization: TF-IDF σε τίτλο προϊόντος
-- Μετρικές αξιολόγησης: Accuracy, Precision, Recall
-- Χρήση Label Encoding για τις κατηγορίες
+---
 
-🧪 Βήματα Εκπαίδευσης
-1. **EDA & Visualization**: Εξετάστηκε η κατανομή των προϊόντων ανά κατηγορία.
-2. **Προεπεξεργασία Κειμένου**: Εφαρμόστηκε TF-IDF στο πεδίο `product_title_raw`.
-3. **Label Encoding**: Οι κατηγορίες κωδικοποιήθηκαν αριθμητικά.
-4. **Εκπαίδευση Μοντέλου**: RandomForestClassifier σε training set.
-5. **Αξιολόγηση**: Με classification report και confusion matrix.
-
-✅ Περιεχόμενο Notebook:
-
-| Απαίτηση                              | Status |
-|--------------------------------------|--------|
-| Εισαγωγή dataset από Kaggle          | ✅ `pricerunner_aggregate.csv` |
-| EDA (κατανομή κατηγοριών)            | ✅ `value_counts()` + `countplot` |
-| Encoding κατηγορικών                 | ✅ `LabelEncoder()` στον στόχο |
-| Δημιουργία target                    | ✅ `product_category` |
-| TF-IDF vectorization για input       | ✅ Κειμενική μετατροπή |
-| Train/Test split                     | ✅ 80/20 |
-| Εκπαίδευση με RandomForest           | ✅ |
-| Classification report               | ✅ Accuracy, Precision, Recall |
-| Confusion Matrix                     | ✅ |
-| Σαφής ροή και καθαρότητα notebook    | ✅ |
-
-▶️ Οδηγίες Εκτέλεσης  
-Ανοίξτε το αρχείο:  
-`ML_Model_Product_Classification.ipynb` μέσω **Google Colab** ή **Jupyter Notebook**.
-
-Εκτελέστε βήμα-βήμα:
-
-1. Εισάγετε το αρχείο `pricerunner_aggregate.csv`
-2. Τρέξτε την εξερεύνηση (EDA) και την προεπεξεργασία
-3. Εκπαιδεύστε το μοντέλο
-4. Αξιολογήστε το με classification metrics
-
-📦 Απαιτούμενες Βιβλιοθήκες:
-
-- pandas  
-- sklearn  
-- seaborn  
-- matplotlib  
-
-Εάν εργάζεστε τοπικά:
+Απαραίτητες Βιβλιοθήκες:
 
 ```bash
-pip install pandas scikit-learn seaborn matplotlib
+pip install pandas numpy scikit-learn shap matplotlib seaborn joblib
 ```
+
+---
+
+Οδηγίες Εκτέλεση:
+
+Εκπαίδευση Μοντέλου:
+
+Τρέξε το αρχείο `titanic_ml.py` για να:
+
+- Κάνεις καθαρισμό δεδομένων και feature engineering
+- Κωδικοποιήσεις τις μεταβλητές `Sex` και `Embarked` χειροκίνητα (χωρίς encoders)
+- Εκπαιδεύσεις RandomForest μοντέλο
+- Αποθηκεύσεις το `model.pkl`
+
+```bash
+python titanic_ml.py
+```
+
+---
+
+Εκτέλεση AI Agent:
+
+Μετά την εκπαίδευση, τρέξε το `ai_agent.py`:
+
+```bash
+python ai_agent.py
+```
+
+Ο agent θα:
+
+- Ζητήσει στοιχεία για νέο επιβάτη
+- Υπολογίσει την πιθανότητα επιβίωσης με threshold 0.58
+- Δείξει σημαντικά χαρακτηριστικά με SHAP
+- Δώσει συμβουλές και "What-if" ανάλυση
+- Παρουσιάσει ανατροφοδότηση σε φυσική γλώσσα
+
+---
+
+Παράδειγμα Input στον Agent:
+
+```
+Pclass: 3
+Sex: male
+Age: 30
+Siblings/Spouses aboard: 0
+Parents/Children aboard: 0
+Fare: 7.25
+Embarked (C/Q/S): S
+```
+
+---
+
+Χαρακτηριστικά του Agent:
+
+- Επεξήγηση εισόδων στον χρήστη
+- SHAP-based ανάλυση χαρακτηριστικών
+- Custom threshold για καλύτερη ακρίβεια
+- Δεν απαιτεί εξωτερικά encoders (.pkl)
+- Τελείως αυτόνομος
+
+---
+
+Αρχεία που δημιουργούνται
+
+  Αρχείο           Περιγραφή                            
+|---------------|---------------------------------------|
+| `model.pkl`   | Εκπαιδευμένο RandomForest μοντέλο     |
+| `ai_agent.py` | Agent με προβλέψεις, εξήγηση & feedback |
+| `titanic_ml.py` | Εκπαίδευση μοντέλου με preprocessing |
+| `titanic.csv` | Δεδομένα Titanic από Kaggle / OpenML |
+
+---
+
+Σημειώσεις:
+
+- Δεν απαιτούνται `LabelEncoders`
+- Ο Agent είναι 100% CLI (διαλογικός)
+- Μπορεί να επεκταθεί εύκολα σε Web App (π.χ. με Streamlit)
+
+---
+
+Προτάσεις επέκτασης:
+
+- Web interface με κουμπιά και dropdown επιλογές
+- Ενσωμάτωση LLM (π.χ. ChatGPT) για φυσική εξήγηση
+- Πολλαπλοί χρήστες / batch prediction
+
+
